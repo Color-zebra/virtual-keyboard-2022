@@ -23,6 +23,8 @@
   font-size: 18px;
   resize: none;
   overflow: auto;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .keyboard__wrapper {

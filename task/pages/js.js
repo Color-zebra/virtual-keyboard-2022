@@ -4,9 +4,11 @@ const BODY = document.body;
 const rusLabel = 'Ё 1 2 3 4 5 6 7 8 9 0 - = Backspace Tab Й Ц У К Е Н Г Ш Щ З Х Ъ \\ Del CapsLock Ф Ы В А П Р О Л Д Ж Э Enter Shift Я Ч С М И Т Ь Б Ю , \u2191 Shift Ctrl Win Alt Space Alt \u2190 \u2193 \u2192 Ctrl'.split(' ');
 const engLabel = '\` 1 2 3 4 5 6 7 8 9 0 - = Backspace Tab Q W E R T Y U I O P [ ] \\ Del CapsLock A S D F G H J K L ; \' Enter Shift Z X C V B N M , . / \u2191 Shift Ctrl Win Alt Space Alt \u2190 \u2193 \u2192 Ctrl'.split(' ');
 const keys = ['Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace', 'Tab', 'KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Backslash', 'Delete', 'CapsLock', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'Enter', 'ShiftLeft', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ArrowUp', 'ShiftRight', 'ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'ControlRight'];
-const specialKeys = `Backspace Tab Enter Shift Ctrl Alt Control CapsLock`.split(' ');
+//const specialKeys = `Backspace Tab Enter Shift Ctrl Alt Control CapsLock`.split(' ');
 
-let lang = 'eng';
+let changeLang = new Set();
+let lang = localStorage.getItem('lang') || 'eng';
+
 
 function renderKeyboard() {
 	let keyboardWrapper = document.createElement('div');
@@ -42,6 +44,14 @@ function renderKeyLabels() {
 	}
 }
 
+function changeLanguage() {
+	if ((changeLang.has('AltLeft') || changeLang.has('AltRight')) && (changeLang.has('ShiftLeft') || changeLang.has('ShifRight'))) {
+		lang = (lang === 'rus') ? 'eng' : 'rus';
+		localStorage.setItem('lang', lang);
+		renderKeyLabels();
+	}
+}
+
 
 
 
@@ -50,25 +60,18 @@ renderTextArea();
 renderKeyLabels();
 
 document.onkeydown = function(e) {
-	if (e.code == 'tab') {
-		e.preventDefault();
-	}
+	changeLang.add(e.code);
 	let key = document.getElementsByClassName(`${e.code}`);
 	for (let i = 0; i < key.length; i++) {
 		key[i].classList.add('_active')
 	}
+	changeLanguage();
 }
 document.onkeyup = function(e) {
+	changeLang.delete(e.code);
 	let key = document.getElementsByClassName(`${e.code}`);
 	for (let i = 0; i < key.length; i++) {
 		key[i].classList.remove('_active')
 	}
 }
-
-
-/* let charCods = [];
-document.onkeydown = function(e) {
-	console.log(e.code);
-	charCods.push(e.code);
-}; */
 
