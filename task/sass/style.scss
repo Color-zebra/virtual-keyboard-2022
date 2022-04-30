@@ -1,0 +1,86 @@
+:root {
+	--grad-one: rgba(3, 56, 244, 0.71);
+	--grad-two: rgba(224, 37, 206, 0.79);
+	//--grad-one: rgba(244, 31, 3, 0.71);
+	//--grad-two: rgba(255, 196, 0, 0.966);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+
+.body {
+	max-width: 100vw;
+	overflow-x: hidden;
+}
+
+
+
+.text-area__wrapper {
+	width: 100%;
+}
+.text-area {
+	width: 100%;
+	height: 40vh;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	font-size: 18px;
+	resize: none;
+	overflow: auto;
+}
+
+
+
+.keyboard__wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	column-gap: 1vw;
+	row-gap: 0.8vw;
+	justify-content: space-between;
+	margin: 0 auto;
+	padding: 20px 10px 24px;
+	border-radius: 10px;
+	background: linear-gradient(90deg, var(--grad-one) 0%, var(--grad-two) 93.75%) no-repeat;
+}
+.key {
+	//outline: 2px rgb(29, 28, 28) solid;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	flex: 1 1 5vw;
+	height: 5vh;
+	background-color: rgb(29, 28, 28);
+	color: rgb(0, 195, 255);
+	font-weight: 700;
+	box-shadow: 0 5px 0 0 grey;
+	transform: translate(0);
+	transition: all .1s ease;
+}
+._active {
+	transform: translate(0, 2px);
+	box-shadow: 0 0px 0 0 grey;
+	background-color: rgba(29, 28, 28, 0.5);
+}
+
+.Backspace {
+	flex: 1 1 14.2vw;
+}
+
+.Tab, .Delete {
+	flex: 1 1 6.8vw;
+}
+
+.CapsLock, .Enter, .ShiftLeft, .ShiftRight {
+	flex: 1 1 13vw;
+}
+
+.Space {
+	flex: 1 1 43.5vw;
+}
+
+.ControlLeft, .ControlRight{
+	flex: 1 1 6.5vw;
+}
+
+
