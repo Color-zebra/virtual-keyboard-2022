@@ -1,5 +1,7 @@
 "use strict"
 
+/* let body = document.createElement('body');
+document.body = body; */
 const BODY = document.body;
 const rusLabel = 'ё 1 2 3 4 5 6 7 8 9 0 - = Backspace Tab й ц у к е н г ш щ з х ъ \\ Del CapsLock ф ы в а п р о л д ж э Enter Shift я ч с м и т ь б ю . \u2191 Shift Ctrl Win Alt Space Alt \u2190 \u2193 \u2192 Ctrl'.split(' ');
 const engLabel = '\` 1 2 3 4 5 6 7 8 9 0 - = Backspace Tab q w e r t y u i o p { } \\ Del CapsLock a s d f g h j k l : \' Enter Shift z x c v b n m , . / \u2191 Shift Ctrl Win Alt Space Alt \u2190 \u2193 \u2192 Ctrl'.split(' ');
@@ -46,6 +48,8 @@ function renderTextArea() {
 	textAreaWrapper.prepend(textArea);
 	textArea.setAttribute('class', 'text-area');
 	textArea.setAttribute('id', 'text-area');
+	textArea.setAttribute('cols', '84');
+	textArea.setAttribute('rows', '20');
 	textArea.setAttribute('autofocus', 'autofocus');
 	BODY.prepend(textAreaWrapper);
 
@@ -76,7 +80,6 @@ function renderKeyLabels() {
 	} else {
 		labels = (lang === 'rus') ? rusLabel : engLabel;
 	}
-	//let labels = (lang === 'rus') ? rusLabel : engLabel;
 	let keys = document.getElementsByClassName('key');
 	for (let i = 0; i < keys.length; i++) {
 		keys[i].textContent = labels[i];
@@ -121,6 +124,9 @@ document.onkeydown = function(e) {
 	if (e.code === 'Enter') {
 		addSymbolToTextArea("\n");
 	}
+	if (e.code === 'Tab') {
+		addSymbolToTextArea("\t");
+	}
 	changeLang.add(e.code);
 	let key = document.getElementById(`${e.code}`);
 	key.classList.add('_active');
@@ -139,8 +145,6 @@ document.onkeyup = function(e) {
 	let key = document.getElementById(`${e.code}`);
 	key.classList.remove('_active');
 }
-
-
 
 /* ===========================================MOUSE CLICK HANDLER========================================= */
 document.onclick = function(e) {
@@ -168,6 +172,9 @@ document.onclick = function(e) {
 	}
 	if (keyAttr === 'Enter') {
 		addSymbolToTextArea("\n");
+	}
+	if (keyAttr === 'Tab') {
+		addSymbolToTextArea("\t");
 	}
 }
 
