@@ -54,6 +54,17 @@
   transition: all 0.1s ease;
 }
 
+.key:hover {
+  text-shadow: rgb(0, 26, 255) 0 0 5px, rgb(0, 26, 255) 0 0 5px, rgb(0, 195, 255) 0 0 10px, rgb(0, 195, 255) 0 0 10px, rgb(0, 195, 255) 0 0 10px, rgb(0, 195, 255) 0 0 10px;
+  cursor: pointer;
+}
+
+.key:active {
+  transform: translate(0, 2px);
+  box-shadow: 0 0px 0 0 grey;
+  background-color: rgba(29, 28, 28, 0.5);
+}
+
 ._active {
   transform: translate(0, 2px);
   box-shadow: 0 0px 0 0 grey;
