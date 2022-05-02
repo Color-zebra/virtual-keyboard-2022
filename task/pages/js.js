@@ -40,6 +40,7 @@ window.onload = function() {
 		textAreaWrapper.setAttribute('class', 'text-area__wrapper');
 		textAreaWrapper.prepend(textArea);
 		textArea.setAttribute('class', 'text-area');
+		textArea.setAttribute('placeholder', 'Для переключения раскладки используйте сочетание Shift + Ctrl. При нажатии клавиш мышью первой следует нажимать Shift.');
 		textArea.setAttribute('id', 'text-area');
 		textArea.setAttribute('cols', '84');
 		textArea.setAttribute('rows', '20');
@@ -82,8 +83,15 @@ window.onload = function() {
 
 
 	/* =====================================KEY PRESS HANDLER============================================================================== */
-	function changeLanguage() {
+/* 	function changeLanguage() {
 		if ((changeLang.has('AltLeft') || changeLang.has('AltRight')) && (changeLang.has('ControlLeft') || changeLang.has('ControlRight'))) {
+			lang = (lang === 'rus') ? 'eng' : 'rus';
+			localStorage.setItem('lang', lang);
+			renderKeyLabels();
+		}
+	} */
+	function changeLanguage() {
+		if ((changeLang.has('ShiftLeft') || changeLang.has('ShiftRight')) && (changeLang.has('ControlLeft') || changeLang.has('ControlRight'))) {
 			lang = (lang === 'rus') ? 'eng' : 'rus';
 			localStorage.setItem('lang', lang);
 			renderKeyLabels();
@@ -192,6 +200,16 @@ window.onload = function() {
 		}
 		if (keyAttr === 'ArrowRight') {
 			caretRight();
+		}
+		if (keyAttr === 'ControlLeft' || keyAttr === 'ControlRight') {
+			if (shiftFlag) {
+				lang = (lang === 'rus') ? 'eng' : 'rus';
+				localStorage.setItem('lang', lang);
+				document.getElementById(`ShiftLeft`).classList.remove('_active');
+				document.getElementById(`ShiftRight`).classList.remove('_active');
+				shiftFlag = false;
+				renderKeyLabels();
+			}
 		}
 	}
 
@@ -319,7 +337,6 @@ window.onload = function() {
 		}
 
 		let posInCurrString = (caretPosition > textArray[0].length) ? caretPosition - symbolsInPrevString : caretPosition;
-		console.log(caretPosition);
 		return {position: caretPosition,
 				curentString: caretPositionString,
 				symbolsInPreviousStrings: symbolsInPrevString,
@@ -341,7 +358,6 @@ window.onload = function() {
 			text.selectionStart = caretInfo.symbolsInPreviousStrings - 1 - symbolsInTargetString + caretInfo.positionInCurrentString;
 		}
 		text.selectionEnd = text.selectionStart;
-		console.log(text.selectionStart);
 	}
 
 	function caretDown() {
@@ -357,8 +373,6 @@ window.onload = function() {
 			text.selectionStart = caretInfo.symbolsInNextString - 1 - symbolsInTargetString + caretInfo.positionInCurrentString;
 		}
 		text.selectionEnd = text.selectionStart;
-		console.log(textArray);
-		console.log(text.selectionStart);
 	}
 
 	function caretLeft() {
