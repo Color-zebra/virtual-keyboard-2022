@@ -72,6 +72,36 @@ window.onload = () => {
     }
   }
 
+  function renderDescription() {
+    const description = document.createElement('div');
+    description.innerHTML = `
+    <p>Для переключения языка используй сочетание Shift + Ctrl. При нажатии клавишь мышью, первым следует нажимать Shift</p>
+    <ul>В задании использовались следующие фишки ES6:
+      <li>const and let</li>
+      <li>destructuring assignment</li>
+      <li>arrow functions</li>
+      <li>Set</li>
+    </ul>
+    <div id="toggler" class="description__button">Скрыть</div>
+    `;
+    description.classList.add('description');
+    description.setAttribute('id', 'description');
+    BODY.prepend(description);
+  }
+
+  function descriptionToggler() {
+    const toggleButton = document.getElementById('toggler');
+    const description = document.getElementById('description');
+    toggleButton.onclick = () => {
+      description.classList.toggle('hidden');
+      if (description.classList.contains('hidden')) {
+        toggleButton.innerText = 'ПОКАЗАТЬ';
+      } else {
+        toggleButton.innerText = 'СКРЫТЬ';
+      }
+    };
+  }
+
   /* ===========================================NAVIGATION FUNCTIONS=============== */
   function getCurrentTextArray() {
     let value = text.value.split('\n');
@@ -371,6 +401,8 @@ window.onload = () => {
     renderKeyboard();
     renderTextArea();
     renderKeyLabels();
+    renderDescription();
+    descriptionToggler();
   }
 
   renderPage();
