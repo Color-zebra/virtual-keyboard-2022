@@ -117,13 +117,14 @@ window.onload = () => {
       if (value[i].length <= 84) {
         result.push(value[i]);
       } else {
-        const string = value[i].slice(0, 90);
-        const other = value[i].slice(90);
+        const string = value[i].slice(0, 87);
+        const other = value[i].slice(87);
         result.push(string);
         value[i] = other;
         i -= 1;
       }
     }
+    console.log(result);
     return result;
   }
 
