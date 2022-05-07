@@ -61,7 +61,9 @@ window.onload = () => {
 
   function renderKeyLabels() {
     let labels;
-    if (capsFlag || shiftFlag) {
+    if (capsFlag && shiftFlag) {
+      labels = (lang === 'rus') ? rusLabel : engLabel;
+    } else if (capsFlag || shiftFlag) {
       labels = (lang === 'rus') ? rusShifted : engShifted;
     } else {
       labels = (lang === 'rus') ? rusLabel : engLabel;
@@ -70,6 +72,19 @@ window.onload = () => {
     for (let i = 0; i < allKeys.length; i += 1) {
       allKeys[i].textContent = labels[i];
     }
+  }
+
+  function descriptionToggler() {
+    const toggleButton = document.getElementById('toggler');
+    const description = document.getElementById('description');
+    toggleButton.onclick = () => {
+      description.classList.toggle('hidden');
+      if (description.classList.contains('hidden')) {
+        toggleButton.innerText = 'ПОКАЗАТЬ';
+      } else {
+        toggleButton.innerText = 'СКРЫТЬ';
+      }
+    };
   }
 
   function renderDescription() {
@@ -87,19 +102,7 @@ window.onload = () => {
     description.classList.add('description');
     description.setAttribute('id', 'description');
     BODY.prepend(description);
-  }
-
-  function descriptionToggler() {
-    const toggleButton = document.getElementById('toggler');
-    const description = document.getElementById('description');
-    toggleButton.onclick = () => {
-      description.classList.toggle('hidden');
-      if (description.classList.contains('hidden')) {
-        toggleButton.innerText = 'ПОКАЗАТЬ';
-      } else {
-        toggleButton.innerText = 'СКРЫТЬ';
-      }
-    };
+    descriptionToggler();
   }
 
   /* ===========================================NAVIGATION FUNCTIONS=============== */
@@ -215,7 +218,15 @@ window.onload = () => {
   /* ==================input functions======================= */
   function addSymbolToTextArea(symbol) {
     const selected = [text.selectionEnd, text.selectionStart];
-    const letter = (capsFlag || shiftFlag) ? symbol.toUpperCase() : symbol.toLowerCase();
+    let letter;
+    if (capsFlag && shiftFlag) {
+      letter = symbol.toLowerCase();
+    } else if (capsFlag || shiftFlag) {
+      letter = symbol.toUpperCase();
+    } else {
+      letter = symbol.toLowerCase();
+    }
+    // const letter = (capsFlag || shiftFlag) ? symbol.toUpperCase() : symbol.toLowerCase();
     text.value = `${text.value.slice(0, selected[1])}${letter}${text.value.slice(selected[0], text.value.length)}`;
     text.selectionStart = selected[1] + 1;
     text.selectionEnd = selected[0] + 1;
@@ -227,7 +238,10 @@ window.onload = () => {
     }
   }
   function addSpaceToTextArea() {
-    text.value = `${text.value} `;
+    const selected = [text.selectionEnd, text.selectionStart];
+    text.value = `${text.value.slice(0, selected[1])}${' '}${text.value.slice(selected[0], text.value.length)}`;
+    text.selectionStart = selected[1] + 1;
+    text.selectionEnd = selected[0] + 1;
   }
   function removeSymbolFromLeft() {
     const selected = [text.selectionEnd, text.selectionStart];
@@ -274,8 +288,8 @@ window.onload = () => {
     renderKeyLabels();
   }
   /* =====================================KEY PRESS HANDLER===================================== */
-  function changeLanguage() {
-    if ((changeLang.has('ShiftLeft') || changeLang.has('ShiftRight')) && (changeLang.has('ControlLeft') || changeLang.has('ControlRight'))) {
+  function changeLanguage(e) {
+    if ((changeLang.has('ShiftLeft') || changeLang.has('ShiftRight')) && (changeLang.has('ControlLeft') || changeLang.has('ControlRight')) && e.repeat === false) {
       lang = (lang === 'rus') ? 'eng' : 'rus';
       localStorage.setItem('lang', lang);
       renderKeyLabels();
@@ -402,7 +416,6 @@ window.onload = () => {
     renderTextArea();
     renderKeyLabels();
     renderDescription();
-    descriptionToggler();
   }
 
   renderPage();
