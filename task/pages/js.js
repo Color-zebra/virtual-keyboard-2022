@@ -11,15 +11,12 @@ window.onload = () => {
 
   let text;
 
-  /* =================================================FLAGS====================== */
   const changeLang = new Set();
   let lang = localStorage.getItem('lang') || 'eng';
 
   let capsFlag = false;
   let shiftFlag = false;
   let shiftPressed = false;
-
-  /* ===================================RENDER KEYBOARD FUNCTIONS================ */
 
   function createKey(className) {
     const key = document.createElement('div');
@@ -44,7 +41,6 @@ window.onload = () => {
     textAreaWrapper.setAttribute('class', 'text-area__wrapper');
     textAreaWrapper.prepend(textArea);
     textArea.setAttribute('class', 'text-area');
-    textArea.setAttribute('placeholder', 'Для переключения раскладки используйте сочетание Shift + Ctrl. При нажатии клавиш мышью первой следует нажимать Shift.');
     textArea.setAttribute('id', 'text-area');
     textArea.setAttribute('cols', '84');
     textArea.setAttribute('rows', '20');
@@ -91,6 +87,7 @@ window.onload = () => {
     const description = document.createElement('div');
     description.innerHTML = `
     <p>Для переключения языка используй сочетание Shift + Ctrl. При нажатии клавишь мышью, первым следует нажимать Shift</p>
+    <p>Клавиатура сделана под Windows</p>
     <ul>В задании использовались следующие фишки ES6:
       <li>const and let</li>
       <li>destructuring assignment</li>
@@ -105,7 +102,6 @@ window.onload = () => {
     descriptionToggler();
   }
 
-  /* ===========================================NAVIGATION FUNCTIONS=============== */
   function getCurrentTextArray() {
     let value = text.value.split('\n');
     value = value.map((item) => {
@@ -124,7 +120,6 @@ window.onload = () => {
         i -= 1;
       }
     }
-    console.log(result);
     return result;
   }
 
@@ -216,7 +211,6 @@ window.onload = () => {
     text.selectionEnd = text.selectionStart;
   }
 
-  /* ==================input functions======================= */
   function addSymbolToTextArea(symbol) {
     const selected = [text.selectionEnd, text.selectionStart];
     let letter;
@@ -227,7 +221,6 @@ window.onload = () => {
     } else {
       letter = symbol.toLowerCase();
     }
-    // const letter = (capsFlag || shiftFlag) ? symbol.toUpperCase() : symbol.toLowerCase();
     text.value = `${text.value.slice(0, selected[1])}${letter}${text.value.slice(selected[0], text.value.length)}`;
     text.selectionStart = selected[1] + 1;
     text.selectionEnd = selected[0] + 1;
@@ -278,7 +271,6 @@ window.onload = () => {
     [text.selectionEnd, text.selectionStart] = selected;
   }
 
-  /* ===========================================REGISTER TOGGLERS================ */
   function capsLockToggler() {
     capsFlag = !capsFlag;
     renderKeyLabels();
@@ -288,7 +280,7 @@ window.onload = () => {
     shiftFlag = !shiftFlag;
     renderKeyLabels();
   }
-  /* =====================================KEY PRESS HANDLER===================================== */
+
   function changeLanguage(e) {
     if ((changeLang.has('ShiftLeft') || changeLang.has('ShiftRight')) && (changeLang.has('ControlLeft') || changeLang.has('ControlRight')) && e.repeat === false) {
       lang = (lang === 'rus') ? 'eng' : 'rus';
@@ -341,6 +333,9 @@ window.onload = () => {
     }
     changeLang.add(e.code);
     const key = document.getElementById(`${e.code}`);
+    if (!key) {
+      return;
+    }
     key.classList.add('_active');
     changeLanguage();
   };
@@ -355,10 +350,12 @@ window.onload = () => {
     }
     changeLang.delete(e.code);
     const key = document.getElementById(`${e.code}`);
+    if (!key) {
+      return;
+    }
     key.classList.remove('_active');
   };
 
-  /* ===========================================MOUSE CLICK HANDLER==================== */
   document.onclick = (e) => {
     const keyAttr = e.target.getAttribute('data-key');
     if (letterKeys.includes(keyAttr)) {
