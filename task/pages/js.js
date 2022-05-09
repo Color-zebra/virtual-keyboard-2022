@@ -337,7 +337,7 @@ window.onload = () => {
       return;
     }
     key.classList.add('_active');
-    changeLanguage();
+    changeLanguage(e);
   };
   document.onkeyup = (e) => {
     e.preventDefault();
