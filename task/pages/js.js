@@ -271,9 +271,11 @@ window.onload = () => {
     [text.selectionEnd, text.selectionStart] = selected;
   }
 
-  function capsLockToggler() {
-    capsFlag = !capsFlag;
-    renderKeyLabels();
+  function capsLockToggler(e) {
+    if (e.repeat === false) {
+      capsFlag = !capsFlag;
+      renderKeyLabels();
+    }
   }
 
   function shiftToggler() {
@@ -304,8 +306,8 @@ window.onload = () => {
     if (e.code === 'Delete') {
       removeSymbolFromRight();
     }
-    if (e.code === 'CapsLock') {
-      capsLockToggler();
+    if (e.code === 'CapsLock' && e.repeat === false) {
+      capsLockToggler(e);
       document.getElementById(`${e.code}`).classList.toggle('_active');
       return;
     }
@@ -337,7 +339,7 @@ window.onload = () => {
       return;
     }
     key.classList.add('_active');
-    changeLanguage();
+    changeLanguage(e);
   };
   document.onkeyup = (e) => {
     e.preventDefault();
@@ -371,7 +373,7 @@ window.onload = () => {
       removeSymbolFromRight();
     }
     if (keyAttr === 'CapsLock') {
-      capsLockToggler();
+      capsLockToggler(e);
       document.getElementById(`${keyAttr}`).classList.toggle('_active');
       return;
     }
