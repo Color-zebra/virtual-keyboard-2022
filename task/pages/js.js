@@ -271,11 +271,9 @@ window.onload = () => {
     [text.selectionEnd, text.selectionStart] = selected;
   }
 
-  function capsLockToggler(e) {
-    if (e.repeat === false) {
-      capsFlag = !capsFlag;
-      renderKeyLabels();
-    }
+  function capsLockToggler() {
+    capsFlag = !capsFlag;
+    renderKeyLabels();
   }
 
   function shiftToggler() {
